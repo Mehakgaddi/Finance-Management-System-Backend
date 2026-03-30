@@ -1,0 +1,97 @@
+.profile-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.profile-heading {
+  font-size: 26px;
+  color: #2c3e50;
+  margin-bottom: 24px;
+}
+
+/* Each section is a card */
+.profile-card {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.profile-card h3 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Name and email display */
+.profile-field {
+  margin-bottom: 14px;
+}
+
+.profile-field label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.profile-field p {
+  font-size: 15px;
+  color: #333;
+}
+
+/* Password form inputs */
+.profile-card input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.update-btn {
+  padding: 10px 20px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.update-btn:hover {
+  background-color: #2471a3;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+.success-msg {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
