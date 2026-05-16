@@ -28,21 +28,27 @@ require("./models/Budget");
 const app = express();
 
 // Middleware
-// Allow requests from both local dev and the deployed Vercel frontend.
-// FRONTEND_URL is set in Render's environment variables to your Vercel URL.
-// Locally it falls back to localhost:3000 so testing still works.
+// Allow requests from:
+// 1. Any Vercel deployment of this project (*.vercel.app)
+// 2. A specific custom domain if set via FRONTEND_URL env var
+// 3. Local development (localhost:3000)
+// This way you never need to update CORS when Vercel gives a new preview URL.
 const allowedOrigins = [
-  process.env.FRONTEND_URL,          // e.g. https://your-app.vercel.app (set in Render)
+  process.env.FRONTEND_URL,          // custom domain if set in Render env vars
   "http://localhost:3000",            // local CRA dev server
-].filter(Boolean); // remove undefined if FRONTEND_URL is not set
+];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, Postman)
+    // Allow requests with no origin (Postman, curl, mobile apps)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+
+    // Allow any vercel.app subdomain (covers all preview + production deployments)
+    if (origin.endsWith(".vercel.app")) return callback(null, true);
+
+    // Allow any explicitly listed origin
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+
     return callback(new Error("Not allowed by CORS"));
   },
   credentials: true
