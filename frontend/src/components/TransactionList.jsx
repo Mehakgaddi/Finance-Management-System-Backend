@@ -7,6 +7,12 @@ import './TransactionList.css';
 
 function TransactionList({ transactions, onDelete, heading }) {
 
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this transaction? This action cannot be undone.')) {
+      onDelete(id);
+    }
+  };
+
   if (transactions.length === 0) {
     return (
       <div className="list-container">
@@ -43,7 +49,7 @@ function TransactionList({ transactions, onDelete, heading }) {
               </td>
               <td>₹ {parseFloat(t.amount).toFixed(2)}</td>
               <td>
-                <button className="delete-btn" onClick={() => onDelete(t.id)}>
+                <button className="delete-btn" onClick={() => handleDelete(t.id)}>
                   Delete
                 </button>
               </td>

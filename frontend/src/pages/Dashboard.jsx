@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
+import ReportButtons from '../components/ReportButtons';
 import Navbar from '../components/Navbar';
 import './Dashboard.css';
 
@@ -40,7 +41,7 @@ function Dashboard() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/transactions/${id}`, {
-        headers: { Authorization: token }
+        headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(transactions.filter(t => t.id !== id));
     } catch (error) {
@@ -103,6 +104,12 @@ function Dashboard() {
         {showForm && (
           <TransactionForm onTransactionAdded={handleTransactionAdded} />
         )}
+
+        {/* Report Buttons Section */}
+        <div className="report-section">
+          <h3>Generate Reports</h3>
+          <ReportButtons />
+        </div>
 
         {/* Recent Transactions */}
         <TransactionList

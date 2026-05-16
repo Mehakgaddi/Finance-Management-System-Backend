@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+
 import './Profile.css';
 
 function Profile() {
@@ -69,7 +69,7 @@ function Profile() {
 
   return (
     <div>
-      <Navbar />
+
       <div className="profile-container">
 
         <h2 className="profile-heading">My Profile</h2>

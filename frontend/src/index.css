@@ -1,15 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global Styles - Premium Dark Theme with Glassmorphism */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
-  color: #333;
+:root {
+  /* Premium Dark Theme Palette */
+  --bg-dark: #0f172a;        /* Very dark blue, almost black */
+  --bg-darker: #020617;      /* Deepest black/blue */
+  
+  /* Glassmorphism Card Backgrounds */
+  --glass-bg: rgba(30, 41, 59, 0.7); /* Semi-transparent slate */
+  --glass-bg-hover: rgba(51, 65, 85, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Text Colors */
+  --text-main: #f8fafc;      /* White/slate */
+  --text-muted: #94a3b8;     /* Grayish */
+  
+  /* Vibrant Accents */
+  --accent-primary: #6366f1; /* Electric Indigo */
+  --accent-primary-hover: #4f46e5;
+  --accent-success: #10b981; /* Emerald Green */
+  --accent-danger: #ef4444;  /* Ruby Red */
+  --accent-warning: #f59e0b; /* Amber */
+  
+  /* Standard Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Border Radius for modern look */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  /* Shadows and Transitions */
+  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.3);
+  --transition: all 0.3s ease;
+  
+  /* Legacy Variables Mapping for seamless dark theme adoption */
+  --white: transparent;
+  --gray-50: transparent;
+  --gray-100: rgba(255, 255, 255, 0.05);
+  --gray-200: rgba(255, 255, 255, 0.1);
+  --gray-300: var(--glass-border);
+  --gray-400: var(--text-muted);
+  --gray-500: var(--text-muted);
+  --gray-600: var(--text-muted);
+  --gray-700: var(--text-main);
+  --gray-800: var(--text-main);
+  --gray-900: var(--text-main);
+  
+  --blue: var(--accent-primary);
+  --blue-dark: var(--accent-primary-hover);
+  --blue-gradient: linear-gradient(135deg, var(--accent-primary) 0%, #818cf8 100%);
+  
+  --green: var(--accent-success);
+  --red: var(--accent-danger);
+  --red-gradient: linear-gradient(135deg, var(--accent-danger) 0%, #f87171 100%);
+  --yellow-gradient: linear-gradient(135deg, var(--accent-warning) 0%, #fcd34d 100%);
+  --purple-gradient: linear-gradient(135deg, #a855f7 0%, #d8b4fe 100%);
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
 
-input, select, button {
-  font-family: Arial, sans-serif;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-darker);
+  /* A subtle gradient background for a more dynamic feel */
+  background-image: radial-gradient(circle at top right, #1e1b4b, var(--bg-darker) 40%);
+  color: var(--text-main);
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+/* Glassmorphism Utility Class and Card Components */
+.glass-card,
+.card,
+.budget-card,
+.budget-status-card,
+.topic-card,
+.summary-card-improved,
+.stats-card,
+.filter-card,
+.profile-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  transition: var(--transition);
+}
+
+.glass-card:hover,
+.card:hover,
+.budget-card:hover,
+.budget-status-card:hover,
+.topic-card:hover,
+.summary-card-improved:hover,
+.stats-card:hover,
+.filter-card:hover,
+.profile-card:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 2.25rem; margin-bottom: var(--spacing-lg); }
+h2 { font-size: 1.75rem; margin-bottom: var(--spacing-md); }
+h3 { font-size: 1.25rem; margin-bottom: var(--spacing-sm); }
+
+p {
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--accent-primary-hover);
+  text-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  font-size: 1rem;
+}
+
+.btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.39);
+}
+
+.btn-primary:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Forms */
+input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+  width: 100%;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Force Page Containers to be Transparent to show the Dark Theme */
+.transactions-page,
+.budget-page,
+.analytics-page,
+.ai-insights-page,
+.chatbot-page,
+.dashboard-improved,
+.profile-container,
+.page-container,
+.main-content {
+  background: transparent !important;
+}
+
+/* Ensure text is readable everywhere */
+.empty-state, td, th, label {
+  color: var(--text-main) !important;
+}
+
+/* stat-label should be muted; stat-value default is text-main but color variants override */
+.stat-value {
+  color: var(--text-main);
+}
+
+/* Fix table header and row backgrounds */
+.transaction-table {
+  color: var(--text-main) !important;
+}
+.transaction-table thead {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+.transaction-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
 }

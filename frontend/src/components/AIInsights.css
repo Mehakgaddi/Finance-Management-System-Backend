@@ -1,0 +1,267 @@
+/* AI Insights Component - Clean, Professional Design */
+
+.ai-insights {
+  background: var(--white);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  color: var(--gray-900);
+}
+
+/* Header */
+.insights-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.insights-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+/* Refresh Button */
+.refresh-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: var(--blue-light);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading State */
+.insights-loading {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--gray-600);
+}
+
+.insights-loading p {
+  margin: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* Error State */
+.insights-error {
+  background-color: var(--red-lighter);
+  border: 1px solid #FECACA;
+  border-left: 3px solid var(--red);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.insights-error p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--red);
+}
+
+/* Empty State */
+.insights-empty {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--gray-600);
+}
+
+.insights-empty p { margin: 0; }
+
+/* Content Container */
+.insights-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* ── Summary Box ── compact horizontal strip */
+.summary-box {
+  background-color: var(--gray-50);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.summary-box h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Summary Grid — 4 items in one row on desktop */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.summary-item {
+  background-color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-item .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.summary-item .value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.summary-item .value.income  { color: var(--green); }
+.summary-item .value.expense { color: var(--red); }
+.summary-item .value.balance { color: var(--blue); }
+.summary-item .value.savings { color: var(--green); }
+
+/* Top Categories — inline pills */
+.top-categories {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--gray-200);
+}
+
+.top-categories h4 {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.top-categories ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.top-categories li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 4px var(--spacing-md);
+  background-color: var(--white);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  border: 1px solid var(--gray-200);
+}
+
+.category-name   { font-weight: 600; color: var(--gray-700); }
+.category-amount { font-weight: 700; color: var(--blue); }
+
+/* ── Insights Box ── */
+.insights-box {
+  background-color: var(--gray-50);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.insights-box h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Insights Text — compact lines */
+.insights-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.insights-text p {
+  margin: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--white);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius-sm);
+  color: var(--gray-900);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* hide blank lines produced by split('\n') */
+.insights-text p:empty { display: none; }
+
+/* Insights Note */
+.insights-note {
+  background-color: var(--blue-lighter);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--blue);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--gray-600);
+}
+
+.insights-note p { margin: 0; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .ai-insights { padding: var(--spacing-md); }
+  .insights-header { flex-direction: column; align-items: flex-start; }
+  .refresh-btn { width: 100%; }
+  .summary-box, .insights-box { padding: var(--spacing-md); }
+}
+
+@media (max-width: 480px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .summary-item .value { font-size: 0.9rem; }
+}

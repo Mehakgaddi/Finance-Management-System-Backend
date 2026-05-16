@@ -12,17 +12,23 @@ function TransactionForm({ onTransactionAdded }) {
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const token = localStorage.getItem('token');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Prevent duplicate submissions
+    if (isLoading) return;
+    
+    setIsLoading(true);
 
     try {
       await axios.post(
         'http://localhost:5000/api/transactions',
         { title, amount, type, category, date },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setMessage('Transaction added!');
@@ -41,6 +47,8 @@ function TransactionForm({ onTransactionAdded }) {
 
     } catch (error) {
       setMessage('Failed to add transaction');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,13 +81,26 @@ function TransactionForm({ onTransactionAdded }) {
           onChange={(e) => setCategory(e.target.value)}
           required
         />
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-        <button type="submit">Add</button>
+        <div className="date-input-wrapper">
+          <input
+            id="transaction-date"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            className="calendar-btn"
+            onClick={() => document.getElementById('transaction-date').showPicker()}
+            title="Pick a date"
+          >
+            📅
+          </button>
+        </div>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Adding...' : 'Add'}
+        </button>
       </form>
       {message && <p className="form-msg">{message}</p>}
     </div>

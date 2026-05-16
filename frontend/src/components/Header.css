@@ -1,0 +1,48 @@
+.header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  /* Override some glass-card properties specifically for the header */
+  border-radius: var(--radius-lg);
+}
+
+.header-left h2 {
+  margin: 0;
+  color: var(--text-main);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+}
+
+.user-profile .avatar {
+  background: var(--accent-primary);
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1rem;
+}
+
+.user-profile .username {
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding-right: var(--spacing-sm);
+}

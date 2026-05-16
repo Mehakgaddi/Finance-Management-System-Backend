@@ -1,0 +1,269 @@
+/* Improved Dashboard Styles - Dark Glassmorphism Theme */
+
+.dashboard-improved {
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* Header Section */
+.dashboard-header-improved {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(79, 70, 229, 0.15) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: white;
+  padding: 40px 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header-improved h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.dashboard-header-improved p {
+  font-size: 1rem;
+  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Main Content */
+.dashboard-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px 32px;
+}
+
+/* Section Styling */
+section {
+  margin-bottom: 32px;
+}
+
+section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+/* Summary Cards Section */
+.summary-section {
+  margin-bottom: 40px;
+}
+
+.summary-cards-improved {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.summary-card-improved {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: var(--transition);
+  border: 1px solid var(--glass-border) !important;
+  border-left: 4px solid !important;
+}
+
+.summary-card-improved:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.card-content h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.card-amount {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.income-card-improved {
+  border-left-color: var(--accent-success) !important;
+  background: rgba(16, 185, 129, 0.06) !important;
+}
+
+.expense-card-improved {
+  border-left-color: var(--accent-danger) !important;
+  background: rgba(239, 68, 68, 0.06) !important;
+}
+
+.balance-card-improved {
+  border-left-color: var(--accent-primary) !important;
+  background: rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Charts Section */
+.charts-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 32px;
+}
+
+.charts-section h2 { margin-bottom: 24px; }
+
+/* Add Transaction Section */
+.add-transaction-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 32px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-header h2 { margin: 0; }
+
+.toggle-form-btn {
+  background: var(--blue-gradient);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  font-family: inherit;
+}
+
+.toggle-form-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Reports Section */
+.reports-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 32px;
+}
+
+.reports-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reports-description {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Transactions Section */
+.transactions-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+}
+
+.transactions-section h2 { margin-bottom: 24px; }
+
+.loading-message {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 20px;
+  font-size: 1rem;
+}
+
+/* Budget Section */
+.budget-section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 32px;
+}
+
+.budget-section h2 { margin-bottom: 24px; }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-content { padding: 0 16px 24px; }
+  .summary-cards-improved { grid-template-columns: 1fr; }
+  .dashboard-header-improved h1 { font-size: 2rem; }
+  section h2 { font-size: 1.25rem; }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header-improved { padding: 24px 16px; }
+  .dashboard-header-improved h1 { font-size: 1.75rem; }
+  .dashboard-header-improved p { font-size: 0.9rem; }
+  .dashboard-content { padding: 0 12px 16px; }
+  .summary-card-improved { padding: 16px; gap: 12px; }
+  .card-icon { font-size: 2rem; }
+  .card-amount { font-size: 1.5rem; }
+  .section-header { flex-direction: column; align-items: flex-start; }
+  .toggle-form-btn { width: 100%; }
+  .add-transaction-section,
+  .reports-section,
+  .transactions-section,
+  .charts-section,
+  .budget-section { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header-improved h1 { font-size: 1.5rem; }
+  .summary-card-improved { flex-direction: column; text-align: center; }
+  .card-content h3 { font-size: 0.8rem; }
+  .card-amount { font-size: 1.3rem; }
+}
