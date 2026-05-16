@@ -28,7 +28,11 @@ require("./models/Budget");
 const app = express();
 
 // Middleware
-app.use(cors()); // allows frontend to talk to backend
+// app.use(cors()); // allows frontend to talk to backend
+app.use(cors({
+  origin: "https://yourfrontend.vercel.app",
+  credentials: true
+}));
 app.use(express.json()); // allows us to read JSON from request body
 
 // Routes
