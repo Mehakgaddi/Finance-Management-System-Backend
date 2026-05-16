@@ -41,7 +41,7 @@ function TransactionList({ transactions, onDelete, heading }) {
             <tr key={t.id}>
               <td>{t.title}</td>
               <td>{t.category}</td>
-              <td>{t.date}</td>
+              <td>{new Date(t.date + 'T00:00:00').toLocaleDateString()}</td>
               <td>
                 <span className={t.type === 'income' ? 'badge income' : 'badge expense'}>
                   {t.type}

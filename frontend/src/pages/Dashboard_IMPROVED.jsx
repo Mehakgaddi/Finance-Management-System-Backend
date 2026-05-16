@@ -3,7 +3,7 @@
 // Includes: Summary cards, Charts, Transactions, Reports
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
@@ -22,9 +22,6 @@ function Dashboard_IMPROVED() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem('token');
-
-  // Fetch transactions when page loads
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -32,12 +29,10 @@ function Dashboard_IMPROVED() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await API.get('/transactions');
       setTransactions(response.data);
     } catch (error) {
-      console.log('Error fetching transactions:', error.message);
+      console.log('Error fetching transactions:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
@@ -46,7 +41,7 @@ function Dashboard_IMPROVED() {
   // Called after adding a transaction
   const handleTransactionAdded = () => {
     fetchTransactions();
-    setFilteredTransactions(null); // clear filter so new transaction is visible
+    setFilteredTransactions(null);
     setShowForm(false);
   };
 
@@ -62,14 +57,11 @@ function Dashboard_IMPROVED() {
   // Delete a transaction
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      // Update both the main list and the filtered list immediately
+      await API.delete(`/transactions/${id}`);
       setTransactions(prev => prev.filter(t => t.id !== id));
       setFilteredTransactions(prev => prev !== null ? prev.filter(t => t.id !== id) : null);
     } catch (error) {
-      console.log('Error deleting transaction:', error.message);
+      console.log('Error deleting transaction:', error.response?.data?.message || error.message);
     }
   };
 
@@ -142,7 +134,7 @@ function Dashboard_IMPROVED() {
         <section className="budget-section">
           <h2>💰 Budget Management</h2>
           <BudgetStatus />
-          <BudgetForm />
+          <BudgetForm onBudgetUpdated={fetchTransactions} />
         </section>
 
         {/* Add Transaction Section */}

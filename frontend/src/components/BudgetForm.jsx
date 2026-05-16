@@ -4,17 +4,16 @@
 // Shows current budget status
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './BudgetForm.css';
 
-function BudgetForm() {
+// onBudgetUpdated: optional callback so the parent can refresh after budget is saved
+function BudgetForm({ onBudgetUpdated }) {
   const [budget, setBudget] = useState('');
   const [currentBudget, setCurrentBudget] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const token = localStorage.getItem('token');
 
   // Fetch current budget when component loads
   useEffect(() => {
@@ -24,13 +23,11 @@ function BudgetForm() {
   // Get current budget from backend
   const fetchBudget = async () => {
     try {
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/budget/get`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await API.get('/budget/get');
       setCurrentBudget(response.data);
       setBudget(response.data.monthlyLimit);
     } catch (err) {
-      // No budget set yet, that's okay
+      // 404 just means no budget set yet — that's fine
       console.log('No budget set yet');
     }
   };
@@ -41,7 +38,6 @@ function BudgetForm() {
     setMessage('');
     setError('');
 
-    // Validate input
     if (!budget || budget <= 0) {
       setError('Budget must be greater than 0');
       return;
@@ -50,19 +46,16 @@ function BudgetForm() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `http://${import.meta.env.VITE_API_URL}/api/budget/set`,
-        { monthlyLimit: parseFloat(budget) },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await API.post('/budget/set', { monthlyLimit: parseFloat(budget) });
 
       setMessage('✅ Budget set successfully!');
       setCurrentBudget(response.data.budget);
       setBudget(response.data.budget.monthlyLimit);
 
-      // Clear message after 3 seconds
-      setTimeout(() => setMessage(''), 3000);
+      // Tell the parent page to refresh its data
+      if (onBudgetUpdated) onBudgetUpdated();
 
+      setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to set budget');
     } finally {

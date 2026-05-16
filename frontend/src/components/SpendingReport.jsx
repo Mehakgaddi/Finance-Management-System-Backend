@@ -2,7 +2,7 @@
 // Displays comprehensive spending analytics and reports
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './SpendingReport.css';
 
 function SpendingReport() {
@@ -10,9 +10,6 @@ function SpendingReport() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem('token');
-
-  // Fetch report when component loads
   useEffect(() => {
     fetchReport();
   }, []);
@@ -21,18 +18,11 @@ function SpendingReport() {
     try {
       setLoading(true);
       setError(null);
-
-      const response = await axios.get(
-        `http://${import.meta.env.VITE_API_URL}/api/analytics/spending`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
+      const response = await API.get('/analytics/spending');
       setReport(response.data.report);
     } catch (err) {
       setError('Could not fetch spending report. Please try again.');
-      console.log('Error fetching report:', err.message);
+      console.log('Error fetching report:', err.response?.data?.message || err.message);
     } finally {
       setLoading(false);
     }

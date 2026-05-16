@@ -2,7 +2,7 @@
 // Displays AI-generated financial insights and spending summary
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './AIInsights.css';
 
 function AIInsights() {
@@ -11,9 +11,6 @@ function AIInsights() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem('token');
-
-  // Fetch AI insights when component loads
   useEffect(() => {
     fetchInsights();
   }, []);
@@ -22,19 +19,12 @@ function AIInsights() {
     try {
       setLoading(true);
       setError(null);
-
-      const response = await axios.get(
-        `http://${import.meta.env.VITE_API_URL}/api/ai/insights`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
+      const response = await API.get('/ai/insights');
       setInsights(response.data.insights);
       setSummary(response.data.summary);
     } catch (err) {
       setError('Could not fetch AI insights. Please try again.');
-      console.log('Error fetching insights:', err.message);
+      console.log('Error fetching insights:', err.response?.data?.message || err.message);
     } finally {
       setLoading(false);
     }

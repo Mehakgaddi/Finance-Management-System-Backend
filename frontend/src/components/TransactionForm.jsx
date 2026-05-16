@@ -2,7 +2,7 @@
 // A form to add a new income or expense transaction
 
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './TransactionForm.css';
 
 function TransactionForm({ onTransactionAdded }) {
@@ -14,39 +14,25 @@ function TransactionForm({ onTransactionAdded }) {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const token = localStorage.getItem('token');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Prevent duplicate submissions
     if (isLoading) return;
-    
     setIsLoading(true);
 
     try {
-      await axios.post(
-        `http://${import.meta.env.VITE_API_URL}/api/transactions`,
-        { title, amount, type, category, date },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await API.post('/transactions', { title, amount, type, category, date });
 
       setMessage('Transaction added!');
-
-      // Clear the form
       setTitle('');
       setAmount('');
       setType('income');
       setCategory('');
       setDate('');
-
-      // Tell Dashboard to refresh the list
       onTransactionAdded();
-
       setTimeout(() => setMessage(''), 2000);
-
     } catch (error) {
-      setMessage('Failed to add transaction');
+      // Show the actual error from the server, not a generic message
+      setMessage(error.response?.data?.message || 'Failed to add transaction');
     } finally {
       setIsLoading(false);
     }

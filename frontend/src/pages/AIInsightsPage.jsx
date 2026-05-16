@@ -2,7 +2,7 @@
 // Only AI-powered insights, no duplicate content
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 import AIInsights from '../components/AIInsights';
 import './AIInsightsPage.css';
@@ -11,8 +11,6 @@ function AIInsightsPage() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -20,12 +18,10 @@ function AIInsightsPage() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await API.get('/transactions');
       setTransactions(response.data);
     } catch (error) {
-      console.log('Error fetching transactions:', error.message);
+      console.log('Error fetching transactions:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }

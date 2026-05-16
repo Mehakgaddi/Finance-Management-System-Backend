@@ -3,7 +3,7 @@
 // Also lets the user update their password and logout
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 import './Profile.css';
@@ -17,19 +17,15 @@ function Profile() {
   const [error, setError] = useState('');
   const [profileError, setProfileError] = useState('');
 
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  // Fetch user profile when page loads
   useEffect(() => {
     fetchProfile();
   }, []);
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await API.get('/auth/profile');
       setName(response.data.name);
       setEmail(response.data.email);
     } catch (err) {
@@ -38,23 +34,16 @@ function Profile() {
     }
   };
 
-  // Handle password update
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     setMessage('');
     setError('');
 
     try {
-      const response = await axios.put(
-        `http://${import.meta.env.VITE_API_URL}/api/auth/update-password`,
-        { currentPassword, newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      const response = await API.put('/auth/update-password', { currentPassword, newPassword });
       setMessage(response.data.message);
       setCurrentPassword('');
       setNewPassword('');
-
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to update password');
     }

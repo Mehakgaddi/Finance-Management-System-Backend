@@ -2,7 +2,7 @@
 // Focused on transaction management only
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 import TransactionForm from '../components/TransactionForm';
 import TransactionList from '../components/TransactionList';
@@ -15,8 +15,6 @@ function TransactionsPage() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -24,12 +22,11 @@ function TransactionsPage() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // API instance from api.js already has the base URL and auth token attached
+      const response = await API.get('/transactions');
       setTransactions(response.data);
     } catch (error) {
-      console.log('Error fetching transactions:', error.message);
+      console.log('Error fetching transactions:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
@@ -47,9 +44,7 @@ function TransactionsPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await API.delete(`/transactions/${id}`);
       // Update both the main list and the filtered list immediately
       setTransactions(prev => prev.filter(t => t.id !== id));
       setFilteredTransactions(prev => prev !== null ? prev.filter(t => t.id !== id) : null);

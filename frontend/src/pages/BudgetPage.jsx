@@ -2,7 +2,7 @@
 // Only budget management, no duplicate content
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 import BudgetForm from '../components/BudgetForm';
 import BudgetStatus from '../components/BudgetStatus';
@@ -13,8 +13,6 @@ function BudgetPage() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
     fetchBudgetAndTransactions();
   }, []);
@@ -22,22 +20,24 @@ function BudgetPage() {
   const fetchBudgetAndTransactions = async () => {
     try {
       setLoading(true);
-      
+
+      // Fetch budget — 404 just means no budget set yet, that's fine
       try {
-        const budgetResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/budget/get`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const budgetResponse = await API.get('/budget/get');
         setBudget(budgetResponse.data);
       } catch (error) {
-        setBudget(null);
+        if (error.response?.status === 404) {
+          setBudget(null); // no budget set yet
+        } else {
+          console.log('Budget fetch error:', error.response?.data?.message || error.message);
+          setBudget(null);
+        }
       }
 
-      const transResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const transResponse = await API.get('/transactions');
       setTransactions(transResponse.data);
     } catch (error) {
-      console.log('Error fetching data:', error.message);
+      console.log('Error fetching data:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }

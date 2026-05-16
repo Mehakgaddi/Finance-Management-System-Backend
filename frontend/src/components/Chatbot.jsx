@@ -3,7 +3,7 @@
 // No AI needed - just predefined Q&A
 
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './Chatbot.css';
 
 function Chatbot() {
@@ -24,51 +24,41 @@ function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Send message to chatbot
   const handleSendMessage = async (e) => {
     e.preventDefault();
-
     if (!inputValue.trim()) return;
 
-    // Add user message to chat
     const userMessage = {
-      id: messages.length + 1,
+      id: Date.now(),          // use timestamp to avoid ID collisions
       text: inputValue,
       sender: 'user',
       timestamp: new Date(),
     };
 
-    setMessages([...messages, userMessage]);
+    const currentInput = inputValue;
+    setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setLoading(true);
 
     try {
-      // Send to backend
-      const response = await axios.post(
-        `http://${import.meta.env.VITE_API_URL}/api/chatbot/message`,
-        { message: inputValue }
-      );
+      const response = await API.post('/chatbot/message', { message: currentInput });
 
-      // Add bot response to chat
       const botMessage = {
-        id: messages.length + 2,
+        id: Date.now() + 1,
         text: response.data.botResponse,
         sender: 'bot',
         timestamp: new Date(),
       };
-
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
-      // Add error message
       const errorMessage = {
-        id: messages.length + 2,
+        id: Date.now() + 1,
         text: '❌ Sorry, I could not process your message. Please try again.',
         sender: 'bot',
         timestamp: new Date(),
       };
-
-      setMessages((prev) => [...prev, errorMessage]);
-      console.log('Error sending message:', error.message);
+      setMessages(prev => [...prev, errorMessage]);
+      console.log('Error sending message:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }

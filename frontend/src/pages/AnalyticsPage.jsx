@@ -2,7 +2,7 @@
 // Only analytics and charts, no duplicate content
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 
 import Charts from '../components/Charts';
 import SpendingReport from '../components/SpendingReport';
@@ -12,8 +12,6 @@ function AnalyticsPage() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -21,12 +19,10 @@ function AnalyticsPage() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await API.get('/transactions');
       setTransactions(response.data);
     } catch (error) {
-      console.log('Error fetching transactions:', error.message);
+      console.log('Error fetching transactions:', error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }

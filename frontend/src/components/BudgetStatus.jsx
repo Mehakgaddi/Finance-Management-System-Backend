@@ -4,7 +4,7 @@
 // Displays warning if overspending
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../services/api';
 import './BudgetStatus.css';
 
 function BudgetStatus() {
@@ -12,8 +12,6 @@ function BudgetStatus() {
   const [spending, setSpending] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const token = localStorage.getItem('token');
 
   // Fetch budget and transactions when component loads
   useEffect(() => {
@@ -24,26 +22,22 @@ function BudgetStatus() {
     try {
       setLoading(true);
 
-      // Get budget
-      const budgetResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/budget/get`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setBudget(budgetResponse.data);
+      // Fetch budget and transactions in parallel for speed
+      const [budgetResponse, transResponse] = await Promise.all([
+        API.get('/budget/get'),
+        API.get('/transactions'),
+      ]);
 
-      // Get transactions
-      const transResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      setBudget(budgetResponse.data);
       setTransactions(transResponse.data);
 
-      // Calculate current month spending
       const now = new Date();
       const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
       let totalSpending = 0;
       transResponse.data.forEach(t => {
         if (t.type === 'expense') {
-          const transDate = new Date(t.date);
+          const transDate = new Date(t.date + 'T00:00:00');
           const transMonth = `${transDate.getFullYear()}-${String(transDate.getMonth() + 1).padStart(2, '0')}`;
           if (transMonth === currentMonth) {
             totalSpending += parseFloat(t.amount);
@@ -52,9 +46,11 @@ function BudgetStatus() {
       });
 
       setSpending(totalSpending);
-
     } catch (error) {
-      console.log('Error fetching data:', error.message);
+      // 404 means no budget set — handled by the !budget check below
+      if (error.response?.status !== 404) {
+        console.log('Error fetching budget data:', error.response?.data?.message || error.message);
+      }
     } finally {
       setLoading(false);
     }
