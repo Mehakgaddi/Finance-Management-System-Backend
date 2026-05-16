@@ -1,6 +1,9 @@
 {
   "name": "finance-backend",
   "version": "1.0.0",
+   "engines": {
+    "node": "20.x"
+  },
   "description": "Backend for Finance Management System",
   "main": "server.js",
   "scripts": {
