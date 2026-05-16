@@ -24,7 +24,7 @@ function BudgetPage() {
       setLoading(true);
       
       try {
-        const budgetResponse = await axios.get('http://localhost:5000/api/budget/get', {
+        const budgetResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/budget/get`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setBudget(budgetResponse.data);
@@ -32,7 +32,7 @@ function BudgetPage() {
         setBudget(null);
       }
 
-      const transResponse = await axios.get('http://localhost:5000/api/transactions', {
+      const transResponse = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(transResponse.data);

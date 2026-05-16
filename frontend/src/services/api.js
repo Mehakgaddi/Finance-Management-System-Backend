@@ -5,9 +5,15 @@
 
 import axios from "axios";
 
+// Base URL comes from the environment variable.
+// In Create React App, env vars must start with REACT_APP_.
+// We store the full backend URL (e.g. https://your-app.onrender.com)
+// and just append /api here — no need to add http:// ourselves.
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 // Create axios instance with base URL
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: `${BASE_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -50,7 +56,7 @@ const refreshTokenSilently = async () => {
 
     // Make request with current token
     const response = await axios.post(
-      "http://localhost:5000/api/auth/refresh-token",
+      `${BASE_URL}/api/auth/refresh-token`,
       {},
       {
         headers: {

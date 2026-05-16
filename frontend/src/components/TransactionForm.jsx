@@ -26,7 +26,7 @@ function TransactionForm({ onTransactionAdded }) {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/transactions',
+        `http://${import.meta.env.VITE_API_URL}/api/transactions`,
         { title, amount, type, category, date },
         { headers: { Authorization: `Bearer ${token}` } }
       );

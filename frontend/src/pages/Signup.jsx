@@ -2,8 +2,8 @@
 // User enters name, email, password → we send it to backend → account created
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { signupUser } from '../services/api';
 import './Auth.css';
 
 function Signup() {
@@ -18,13 +18,10 @@ function Signup() {
     e.preventDefault();  // stop page from refreshing
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
-        name,
-        email,
-        password
-      });
+      // Use the shared API helper so the base URL is always correct
+      const response = await signupUser(name, email, password);
 
-      setMessage(response.data.message);
+      setMessage(response.message);
 
       // After signup, go to login page
       setTimeout(() => {
@@ -32,7 +29,7 @@ function Signup() {
       }, 1000);
 
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Signup failed');
+      setMessage(error.message || 'Signup failed');
     }
   };
 

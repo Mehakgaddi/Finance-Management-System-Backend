@@ -28,9 +28,23 @@ require("./models/Budget");
 const app = express();
 
 // Middleware
-// app.use(cors()); // allows frontend to talk to backend
+// Allow requests from both local dev and the deployed Vercel frontend.
+// FRONTEND_URL is set in Render's environment variables to your Vercel URL.
+// Locally it falls back to localhost:3000 so testing still works.
+const allowedOrigins = [
+  process.env.FRONTEND_URL,          // e.g. https://your-app.vercel.app (set in Render)
+  "http://localhost:3000",            // local CRA dev server
+].filter(Boolean); // remove undefined if FRONTEND_URL is not set
+
 app.use(cors({
-  origin: "https://yourfrontend.vercel.app",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 app.use(express.json()); // allows us to read JSON from request body

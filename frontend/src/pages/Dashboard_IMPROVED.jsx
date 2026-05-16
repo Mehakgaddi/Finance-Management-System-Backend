@@ -32,7 +32,7 @@ function Dashboard_IMPROVED() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/transactions', {
+      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(response.data);
@@ -62,7 +62,7 @@ function Dashboard_IMPROVED() {
   // Delete a transaction
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/transactions/${id}`, {
+      await axios.delete(`http://${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Update both the main list and the filtered list immediately

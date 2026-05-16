@@ -24,7 +24,7 @@ function BudgetForm() {
   // Get current budget from backend
   const fetchBudget = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/budget/get', {
+      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/budget/get`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCurrentBudget(response.data);
@@ -51,7 +51,7 @@ function BudgetForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/budget/set',
+        `http://${import.meta.env.VITE_API_URL}/api/budget/set`,
         { monthlyLimit: parseFloat(budget) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

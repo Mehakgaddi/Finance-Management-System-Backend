@@ -22,7 +22,7 @@ function Dashboard() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/transactions', {
+      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/transactions`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(response.data);
@@ -40,7 +40,7 @@ function Dashboard() {
   // Delete a transaction by id
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/transactions/${id}`, {
+      await axios.delete(`http://${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(transactions.filter(t => t.id !== id));

@@ -27,7 +27,7 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auth/profile', {
+      const response = await axios.get(`http://${import.meta.env.VITE_API_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setName(response.data.name);
@@ -46,7 +46,7 @@ function Profile() {
 
     try {
       const response = await axios.put(
-        'http://localhost:5000/api/auth/update-password',
+        `http://${import.meta.env.VITE_API_URL}/api/auth/update-password`,
         { currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -23,7 +23,7 @@ function SpendingReport() {
       setError(null);
 
       const response = await axios.get(
-        'http://localhost:5000/api/analytics/spending',
+        `http://${import.meta.env.VITE_API_URL}/api/analytics/spending`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

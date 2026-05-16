@@ -45,7 +45,7 @@ function Chatbot() {
     try {
       // Send to backend
       const response = await axios.post(
-        'http://localhost:5000/api/chatbot/message',
+        `http://${import.meta.env.VITE_API_URL}/api/chatbot/message`,
         { message: inputValue }
       );
 
