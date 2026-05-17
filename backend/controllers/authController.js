@@ -18,7 +18,10 @@ const signup = async (req, res) => {
     // Check if a user with this email already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({
+        message: "Email already registered",
+        code: "EMAIL_EXISTS",
+      });
     }
 
     // Hash the password before saving (never store plain text passwords)
@@ -47,16 +50,22 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
+    // Find the user by email (email is already lowercased by validateLogin middleware)
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({
+        message: "Invalid email or password",
+        code: "INVALID_CREDENTIALS",
+      });
     }
 
     // Compare the entered password with the hashed password in DB
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({
+        message: "Invalid email or password",
+        code: "INVALID_CREDENTIALS",
+      });
     }
 
     // Generate token using utility function
@@ -72,9 +81,11 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    res.status(500).json({
+      message: "Something went wrong",
+      code: "SERVER_ERROR",
+      error: error.message,
+    });
   }
 };
 

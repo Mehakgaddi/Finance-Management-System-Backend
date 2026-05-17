@@ -38,7 +38,7 @@ const validateSignup = (req, res, next) => {
 
   // Trim input to prevent extra spaces causing issues
   req.body.name = name.trim();
-  req.body.email = email.trim().toLowerCase();
+  req.body.email = email.trim().toLowerCase(); // always lowercase so login always matches
   req.body.password = password;
 
   next();

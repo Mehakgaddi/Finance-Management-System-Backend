@@ -176,6 +176,13 @@
   background: rgba(239, 68, 68, 0.08);
 }
 
+.error-text {
+  color: var(--accent-danger);
+  font-size: 0.82rem;
+  margin-top: var(--spacing-xs);
+  font-weight: 600;
+}
+
 .form-group.error .error-text {
   color: var(--accent-danger);
   font-size: 0.85rem;

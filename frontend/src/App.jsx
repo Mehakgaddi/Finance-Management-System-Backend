@@ -28,7 +28,6 @@ import AIInsightsPage from './pages/AIInsightsPage';
 import ChatbotPage from './pages/ChatbotPage';
 
 // Components
-import Breadcrumbs from './components/Breadcrumbs';
 import Layout from './components/Layout';
 
 // Protected Route Wrapper
@@ -36,7 +35,9 @@ function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
+    // Clear both token and user data
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   };
 
   return token ? (
@@ -44,7 +45,7 @@ function PrivateRoute({ children }) {
       {children}
     </Layout>
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/login" replace />
   );
 }
 
@@ -58,9 +59,6 @@ function App() {
     >
       {/* Scroll to top on every navigation */}
       <ScrollToTop />
-
-      {/* Global Breadcrumbs */}
-      <Breadcrumbs />
 
       <Routes>
         {/* Redirect Root */}
