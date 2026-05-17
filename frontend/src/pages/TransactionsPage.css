@@ -313,10 +313,14 @@
 }
 
 @media (max-width: 600px) {
-  .page-container { padding: var(--spacing-md); }
-  .page-header h1 { font-size: 1.5rem; }
+  .page-container { padding: var(--spacing-sm); }
+  .page-header h1 { font-size: 1.3rem; }
   .transactions-left-panel { flex-direction: column; }
-  .transaction-table { font-size: 0.8rem; }
+  /* Make table scrollable horizontally on small screens */
+  .transactions-container { overflow-x: auto; padding: var(--spacing-sm); }
+  .transaction-table { font-size: 0.78rem; min-width: 480px; }
   .transaction-table th,
-  .transaction-table td { padding: var(--spacing-sm); }
+  .transaction-table td { padding: 8px 6px; }
+  .badge { font-size: 0.68rem; padding: 2px 6px; }
+  .delete-btn { font-size: 0.72rem; padding: 3px 6px; }
 }

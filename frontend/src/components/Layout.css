@@ -1,18 +1,19 @@
-/* ─── CSS variables for sidebar widths ─── */
+/* ─── Sidebar width tokens ─── */
 :root {
-  --sidebar-width-open:     250px;
-  --sidebar-width-collapsed: 64px;
-  --transition-speed:       0.3s;
+  --sidebar-width-open:      250px;
+  --sidebar-width-collapsed:  64px;
+  --transition-speed:         0.3s;
+  --mobile-topbar-height:     56px;
 }
 
+/* ─── Root layout ─── */
 .layout-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* ─── Main content wrapper ─── */
-/* Shifts right by the sidebar width and transitions smoothly */
+/* ─── Main content wrapper (desktop) ─── */
 .main-content-wrapper {
   flex: 1;
   display: flex;
@@ -21,17 +22,12 @@
   padding: var(--spacing-lg);
   transition: margin-left var(--transition-speed) ease;
   animation: fadeIn 0.4s ease-out;
+  /* Prevent content from going under the fixed sidebar */
+  min-width: 0;
 }
 
-/* When sidebar is open, push content right by full sidebar width */
-.sidebar-expanded .main-content-wrapper {
-  margin-left: var(--sidebar-width-open);
-}
-
-/* When sidebar is collapsed, push content right by icon-only width */
-.sidebar-collapsed .main-content-wrapper {
-  margin-left: var(--sidebar-width-collapsed);
-}
+.sidebar-expanded .main-content-wrapper  { margin-left: var(--sidebar-width-open); }
+.sidebar-collapsed .main-content-wrapper { margin-left: var(--sidebar-width-collapsed); }
 
 .main-content {
   flex: 1;
@@ -44,11 +40,97 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── Mobile: sidebar overlays instead of pushing content ─── */
+/* ════════════════════════════════════════
+   MOBILE  (≤ 768px)
+   ════════════════════════════════════════ */
 @media (max-width: 768px) {
+
+  /* Content takes full width — no sidebar margin */
   .sidebar-expanded .main-content-wrapper,
   .sidebar-collapsed .main-content-wrapper {
     margin-left: 0;
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
+    padding-top: calc(var(--mobile-topbar-height) + var(--spacing-sm));
+  }
+
+  /* ── Mobile top bar ── */
+  .mobile-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--mobile-topbar-height);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-md);
+    z-index: 300;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+
+  .hamburger-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition);
+  }
+
+  .hamburger-btn:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+
+  .mobile-brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-success);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Drawer backdrop ── */
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 400;
+    animation: fadeInBackdrop 0.2s ease;
+  }
+
+  @keyframes fadeInBackdrop {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── Mobile drawer ── */
+  .mobile-drawer {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: var(--sidebar-width-open);
+    z-index: 500;
+    transform: translateX(-100%);
+    transition: transform var(--transition-speed) ease;
+    /* Shadow to separate from content */
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+  }
+
+  .mobile-drawer.drawer-open {
+    transform: translateX(0);
+  }
+
+  /* Hide the desktop header on mobile to save space */
+  .main-content-wrapper > .header {
+    display: none;
   }
 }

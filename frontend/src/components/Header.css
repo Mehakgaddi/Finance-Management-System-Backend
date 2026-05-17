@@ -1,17 +1,17 @@
 .header {
-  height: 80px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  /* Override some glass-card properties specifically for the header */
+  padding: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
   border-radius: var(--radius-lg);
 }
 
 .header-left h2 {
   margin: 0;
   color: var(--text-main);
+  font-size: 1.25rem;
 }
 
 .header-right {
@@ -39,10 +39,19 @@
   justify-content: center;
   border-radius: 50%;
   font-size: 1rem;
+  flex-shrink: 0;
 }
 
 .user-profile .username {
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   padding-right: var(--spacing-sm);
+  white-space: nowrap;
+}
+
+/* On mobile the header is hidden (mobile-topbar replaces it) */
+@media (max-width: 768px) {
+  .header {
+    display: none;
+  }
 }

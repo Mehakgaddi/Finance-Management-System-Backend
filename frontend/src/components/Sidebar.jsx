@@ -2,9 +2,13 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
-// isOpen  — whether the sidebar is expanded (shows labels) or collapsed (icons only)
-// onToggle — called when the user clicks the toggle button
-const Sidebar = ({ onLogout, isOpen, onToggle }) => {
+/**
+ * isOpen        — expanded (labels visible) vs collapsed (icons only) — desktop
+ * onToggle      — called when toggle/close button is clicked
+ * onNavClick    — called when a nav link is clicked (closes mobile drawer)
+ * isMobileDrawer — true when rendered inside the mobile slide-in drawer
+ */
+const Sidebar = ({ onLogout, isOpen, onToggle, onNavClick, isMobileDrawer = false }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,44 +17,44 @@ const Sidebar = ({ onLogout, isOpen, onToggle }) => {
   };
 
   const navItems = [
-    { to: '/dashboard',    icon: '🏠', label: 'Dashboard'    },
-    { to: '/transactions', icon: '💳', label: 'Transactions'  },
-    { to: '/budget',       icon: '📊', label: 'Budget'        },
-    { to: '/analytics',    icon: '📈', label: 'Analytics'     },
-    { to: '/ai-insights',  icon: '🤖', label: 'AI Insights'   },
-    { to: '/chatbot',      icon: '💬', label: 'AI Assistant'  },
-    { to: '/profile',      icon: '👤', label: 'Profile'       },
+    { to: '/dashboard',    icon: '🏠', label: 'Dashboard'   },
+    { to: '/transactions', icon: '💳', label: 'Transactions' },
+    { to: '/budget',       icon: '📊', label: 'Budget'       },
+    { to: '/analytics',    icon: '📈', label: 'Analytics'    },
+    { to: '/ai-insights',  icon: '🤖', label: 'AI Insights'  },
+    { to: '/chatbot',      icon: '💬', label: 'AI Assistant' },
+    { to: '/profile',      icon: '👤', label: 'Profile'      },
   ];
 
   return (
     <aside className={`sidebar glass-card ${isOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
 
-      {/* ── Brand + Toggle button ── */}
+      {/* ── Brand + toggle ── */}
       <div className="sidebar-brand">
         {isOpen && <h2>💰 FMS</h2>}
 
-        {/* Toggle button — always visible */}
         <button
           className="sidebar-toggle-btn"
           onClick={onToggle}
-          title={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
-          aria-label={isOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          title={isMobileDrawer ? 'Close menu' : (isOpen ? 'Collapse' : 'Expand')}
+          aria-label={isMobileDrawer ? 'Close menu' : (isOpen ? 'Collapse sidebar' : 'Expand sidebar')}
         >
-          {isOpen ? '◀' : '▶'}
+          {/* Mobile drawer shows ✕, desktop shows ◀ / ▶ */}
+          {isMobileDrawer ? '✕' : (isOpen ? '◀' : '▶')}
         </button>
       </div>
 
-      {/* ── Navigation links ── */}
+      {/* ── Nav links ── */}
       <nav className="sidebar-nav">
         {navItems.map(({ to, icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className="nav-item"
-            title={!isOpen ? label : undefined}  /* tooltip when collapsed */
+            title={!isOpen ? label : undefined}
+            onClick={onNavClick}
           >
             <span className="icon">{icon}</span>
-            {/* Label only shown when sidebar is open */}
             {isOpen && <span className="label">{label}</span>}
           </NavLink>
         ))}

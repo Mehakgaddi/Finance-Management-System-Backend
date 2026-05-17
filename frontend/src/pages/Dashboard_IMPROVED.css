@@ -236,34 +236,36 @@ section h2 {
 
 .budget-section h2 { margin-bottom: 24px; }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 1024px) {
   .dashboard-content { padding: 0 16px 24px; }
-  .summary-cards-improved { grid-template-columns: 1fr; }
+  .summary-cards-improved { grid-template-columns: 1fr 1fr; }
   .dashboard-header-improved h1 { font-size: 2rem; }
   section h2 { font-size: 1.25rem; }
 }
 
 @media (max-width: 768px) {
-  .dashboard-header-improved { padding: 24px 16px; }
-  .dashboard-header-improved h1 { font-size: 1.75rem; }
-  .dashboard-header-improved p { font-size: 0.9rem; }
-  .dashboard-content { padding: 0 12px 16px; }
+  .dashboard-header-improved { padding: 20px 16px; margin-bottom: var(--spacing-lg); }
+  .dashboard-header-improved h1 { font-size: 1.5rem; }
+  .dashboard-header-improved p { font-size: 0.85rem; }
+  .dashboard-content { padding: 0 0 16px; }
+  .summary-cards-improved { grid-template-columns: 1fr; gap: 12px; }
   .summary-card-improved { padding: 16px; gap: 12px; }
-  .card-icon { font-size: 2rem; }
-  .card-amount { font-size: 1.5rem; }
-  .section-header { flex-direction: column; align-items: flex-start; }
+  .card-icon { font-size: 1.75rem; min-width: 44px; }
+  .card-amount { font-size: 1.4rem; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
   .toggle-form-btn { width: 100%; }
   .add-transaction-section,
   .reports-section,
   .transactions-section,
   .charts-section,
-  .budget-section { padding: 16px; }
+  .budget-section { padding: 14px; }
 }
 
 @media (max-width: 480px) {
-  .dashboard-header-improved h1 { font-size: 1.5rem; }
-  .summary-card-improved { flex-direction: column; text-align: center; }
-  .card-content h3 { font-size: 0.8rem; }
-  .card-amount { font-size: 1.3rem; }
+  .dashboard-header-improved h1 { font-size: 1.25rem; }
+  .summary-card-improved { flex-direction: column; text-align: center; gap: 8px; }
+  .card-content h3 { font-size: 0.75rem; }
+  .card-amount { font-size: 1.2rem; }
+  .summary-cards-improved { grid-template-columns: 1fr; }
 }
