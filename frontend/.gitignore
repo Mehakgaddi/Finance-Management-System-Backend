@@ -1,7 +1,10 @@
 node_modules/
 build/
 dist/
-.env
+
+# .env.local has local config — never commit it
 .env.local
-# .env.production is intentionally committed — it only contains the public backend URL
-# Secrets are never stored there
+
+# .env and .env.production are safe to commit — they only contain the public backend URL
+# .env          → base default (Render URL)
+# .env.production → used by Vercel build (Render URL)
