@@ -3,3 +3,5 @@ build/
 dist/
 .env
 .env.local
+# .env.production is intentionally committed — it only contains the public backend URL
+# Secrets are never stored there
