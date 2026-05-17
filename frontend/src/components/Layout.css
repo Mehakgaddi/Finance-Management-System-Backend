@@ -1,19 +1,36 @@
+/* ─── CSS variables for sidebar widths ─── */
+:root {
+  --sidebar-width-open:     250px;
+  --sidebar-width-collapsed: 64px;
+  --transition-speed:       0.3s;
+}
+
 .layout-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* Wrapper for everything to the right of the sidebar */
+/* ─── Main content wrapper ─── */
+/* Shifts right by the sidebar width and transitions smoothly */
 .main-content-wrapper {
   flex: 1;
-  margin-left: 250px; /* Leave space for the 250px sidebar */
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-lg);
   min-height: 100vh;
-  /* Add a subtle fade-in animation when the app loads */
-  animation: fadeIn 0.5s ease-out;
+  padding: var(--spacing-lg);
+  transition: margin-left var(--transition-speed) ease;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* When sidebar is open, push content right by full sidebar width */
+.sidebar-expanded .main-content-wrapper {
+  margin-left: var(--sidebar-width-open);
+}
+
+/* When sidebar is collapsed, push content right by icon-only width */
+.sidebar-collapsed .main-content-wrapper {
+  margin-left: var(--sidebar-width-collapsed);
 }
 
 .main-content {
@@ -23,23 +40,15 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Make it somewhat responsive (optional for a simple project, but nice to have) */
+/* ─── Mobile: sidebar overlays instead of pushing content ─── */
 @media (max-width: 768px) {
-  .main-content-wrapper {
-    margin-left: 0; /* Sidebar might be hidden or overlay on small screens */
+  .sidebar-expanded .main-content-wrapper,
+  .sidebar-collapsed .main-content-wrapper {
+    margin-left: 0;
     padding: var(--spacing-md);
   }
-  
-  /* In a real app we'd add a hamburger menu for mobile, 
-     but for this simple layout we'll just keep it basic */
 }

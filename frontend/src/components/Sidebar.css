@@ -1,5 +1,6 @@
+/* ─── Sidebar base ─── */
 .sidebar {
-  width: 250px;
+  width: var(--sidebar-width-open);
   height: 100vh;
   position: fixed;
   top: 0;
@@ -7,33 +8,79 @@
   display: flex;
   flex-direction: column;
   padding: var(--spacing-lg) 0;
-  /* Override some glass-card properties specifically for the sidebar */
   border-radius: 0;
   border-left: none;
   border-top: none;
   border-bottom: none;
-  z-index: 100;
+  z-index: 200;
+  overflow: hidden;
+  /* Smooth width transition when toggling */
+  transition: width var(--transition-speed) ease;
 }
 
+/* Collapsed state — icon-only width */
+.sidebar.sidebar-closed {
+  width: var(--sidebar-width-collapsed);
+}
+
+/* ─── Brand row ─── */
 .sidebar-brand {
-  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-md);
   margin-bottom: var(--spacing-xl);
-  text-align: center;
+  min-height: 40px;
 }
 
 .sidebar-brand h2 {
-  color: var(--accent-success); /* Use emerald green for the brand */
+  color: var(--accent-success);
   margin: 0;
   letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+/* ─── Toggle button ─── */
+.sidebar-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: var(--transition);
+  /* When collapsed, the button is the only thing in the brand row — center it */
+  margin-left: auto;
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+/* When collapsed, center the toggle button */
+.sidebar.sidebar-closed .sidebar-brand {
+  justify-content: center;
+  padding: 0 var(--spacing-sm);
+}
+
+/* ─── Nav ─── */
 .sidebar-nav {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  padding: 0 var(--spacing-md);
+  padding: 0 var(--spacing-sm);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .nav-item {
@@ -45,27 +92,41 @@
   border-radius: var(--radius-md);
   transition: var(--transition);
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-main);
-  transform: translateX(5px); /* Small movement for dynamic feel */
+  transform: translateX(4px);
 }
 
-/* Active route styling */
 .nav-item.active {
   background: var(--accent-primary);
   color: white;
   box-shadow: var(--shadow-glow);
 }
 
-.nav-item .icon {
-  font-size: 1.25rem;
+/* When collapsed, center the icon */
+.sidebar.sidebar-closed .nav-item {
+  justify-content: center;
+  padding: var(--spacing-sm);
+  gap: 0;
 }
 
+.sidebar.sidebar-closed .nav-item:hover {
+  transform: none;
+}
+
+.nav-item .icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ─── Footer / Logout ─── */
 .sidebar-footer {
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-sm);
   margin-top: auto;
 }
 
@@ -75,16 +136,39 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
-  background: rgba(239, 68, 68, 0.1); /* Subtle red background */
+  background: rgba(239, 68, 68, 0.1);
   color: var(--accent-danger);
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   font-weight: 600;
   transition: var(--transition);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .logout-btn:hover {
   background: var(--accent-danger);
   color: white;
   transform: translateY(-2px);
+}
+
+/* When collapsed, icon only */
+.sidebar.sidebar-closed .logout-btn {
+  gap: 0;
+  padding: var(--spacing-sm);
+}
+
+/* ─── Mobile: sidebar overlays the content ─── */
+@media (max-width: 768px) {
+  .sidebar {
+    /* On mobile, collapsed sidebar hides off-screen */
+    transform: translateX(0);
+    transition: width var(--transition-speed) ease,
+                transform var(--transition-speed) ease;
+  }
+
+  .sidebar.sidebar-closed {
+    /* On mobile, collapse to icon width (still visible for toggle) */
+    width: var(--sidebar-width-collapsed);
+  }
 }
