@@ -1,6 +1,4 @@
 // Login Page
-// Uses the centralized API helper for requests
-// Validates input before sending, shows proper error messages
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -17,7 +15,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // If user is already logged in, send them straight to dashboard
+  // Already logged in → go straight to dashboard
   useEffect(() => {
     if (localStorage.getItem('token')) {
       navigate('/dashboard', { replace: true });
@@ -29,7 +27,7 @@ function Login() {
     setErrors({});
     setGeneralError('');
 
-    // Client-side validation first
+    // Client-side validation
     const validationErrors = getLoginErrors(email, password);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -38,18 +36,24 @@ function Login() {
 
     try {
       setLoading(true);
-      await loginUser(email, password);
-      // loginUser saves token + user to localStorage automatically
+      // Always send email as lowercase — backend does the same so they always match
+      await loginUser(email.trim().toLowerCase(), password);
       navigate('/dashboard', { replace: true });
     } catch (error) {
-      // error is the response body: { message, code }
+      // error is the thrown response body: { message, code }
+      // or a network error object
+      if (!error.message && !error.code) {
+        // Network error — backend might be sleeping (Render free tier)
+        setGeneralError('Cannot reach the server. Please wait a moment and try again.');
+        return;
+      }
+
       const code = error.code;
       if (code === 'INVALID_CREDENTIALS') {
         setGeneralError('Invalid email or password. Please try again.');
-      } else if (code === 'EMAIL_EXISTS') {
-        setGeneralError('This email is already registered.');
+      } else if (code === 'SERVER_ERROR') {
+        setGeneralError('Server error. Please try again in a moment.');
       } else {
-        // Show whatever message the server sent, fall back to generic
         setGeneralError(error.message || 'Login failed. Please try again.');
       }
     } finally {
@@ -63,9 +67,7 @@ function Login() {
         <h2>Login to Your Account</h2>
 
         {generalError && (
-          <div className="error-message">
-            {generalError}
-          </div>
+          <div className="error-message">{generalError}</div>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -78,9 +80,7 @@ function Login() {
               disabled={loading}
               autoComplete="email"
             />
-            {errors.email && (
-              <p className="error-text">{errors.email}</p>
-            )}
+            {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
 
           <div className="form-group">
@@ -92,9 +92,7 @@ function Login() {
               disabled={loading}
               autoComplete="current-password"
             />
-            {errors.password && (
-              <p className="error-text">{errors.password}</p>
-            )}
+            {errors.password && <p className="error-text">{errors.password}</p>}
           </div>
 
           <button type="submit" disabled={loading}>

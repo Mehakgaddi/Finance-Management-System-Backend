@@ -89,7 +89,10 @@ export const signupUser = async (name, email, password) => {
     const response = await API.post("/auth/signup", { name, email, password });
     return response.data;
   } catch (error) {
-    throw error.response?.data || { message: "Signup failed" };
+    if (error.response?.data) {
+      throw error.response.data;
+    }
+    throw { message: error.message || "Network error. Please try again." };
   }
 };
 
@@ -106,7 +109,12 @@ export const loginUser = async (email, password) => {
 
     return response.data;
   } catch (error) {
-    throw error.response?.data || { message: "Login failed" };
+    // Throw the server's response body if available, otherwise a network error object
+    if (error.response?.data) {
+      throw error.response.data;
+    }
+    // Network error (server down, CORS, timeout)
+    throw { message: error.message || "Network error. Please try again." };
   }
 };
 

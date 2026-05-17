@@ -13,10 +13,18 @@ require("dotenv").config();
 // SIGNUP
 const signup = async (req, res) => {
   const { name, email, password } = req.body;
+  // email is already lowercased by validateSignup middleware
+  // but we double-ensure here for safety
+  const normalizedEmail = email.toLowerCase().trim();
 
   try {
-    // Check if a user with this email already exists
-    const existingUser = await User.findOne({ where: { email } });
+    // Case-insensitive duplicate check — prevents Test@Gmail.com and test@gmail.com
+    // from being registered as two separate accounts
+    const { fn, col, where } = require("sequelize");
+    const existingUser = await User.findOne({
+      where: where(fn("LOWER", col("email")), normalizedEmail),
+    });
+
     if (existingUser) {
       return res.status(400).json({
         message: "Email already registered",
@@ -27,21 +35,31 @@ const signup = async (req, res) => {
     // Hash the password before saving (never store plain text passwords)
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the new user in the database
+    // Always store email in lowercase
     const newUser = await User.create({
-      name,
-      email,
+      name: name.trim(),
+      email: normalizedEmail,
       password: hashedPassword,
     });
 
     // Also backup user info to Firebase
-    saveUserToFirebase(newUser.id, { name, email });
+    saveUserToFirebase(newUser.id, { name: name.trim(), email: normalizedEmail });
 
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Something went wrong", error: error.message });
+    console.error("Signup error:", error.message);
+    // Handle Sequelize unique constraint violation (race condition safety net)
+    if (error.name === "SequelizeUniqueConstraintError") {
+      return res.status(400).json({
+        message: "Email already registered",
+        code: "EMAIL_EXISTS",
+      });
+    }
+    res.status(500).json({
+      message: "Something went wrong",
+      code: "SERVER_ERROR",
+      error: error.message,
+    });
   }
 };
 
@@ -50,8 +68,14 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email (email is already lowercased by validateLogin middleware)
-    const user = await User.findOne({ where: { email } });
+    // Use case-insensitive email lookup so old users (stored with any case) can still login.
+    // MySQL utf8_general_ci is case-insensitive by default, but we use fn('LOWER') to be safe
+    // across all DB collations including utf8_bin.
+    const { Op, fn, col, where } = require("sequelize");
+    const user = await User.findOne({
+      where: where(fn("LOWER", col("email")), email.toLowerCase()),
+    });
+
     if (!user) {
       return res.status(400).json({
         message: "Invalid email or password",
@@ -68,6 +92,13 @@ const login = async (req, res) => {
       });
     }
 
+    // Normalize the stored email to lowercase on successful login
+    // This silently fixes old accounts that were stored with mixed case
+    if (user.email !== user.email.toLowerCase()) {
+      user.email = user.email.toLowerCase();
+      await user.save();
+    }
+
     // Generate token using utility function
     const token = generateToken(user.id, "1d");
 
@@ -81,6 +112,7 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Login error:", error.message);
     res.status(500).json({
       message: "Something went wrong",
       code: "SERVER_ERROR",
