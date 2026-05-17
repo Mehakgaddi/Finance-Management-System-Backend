@@ -35,7 +35,9 @@ const app = express();
 // This way you never need to update CORS when Vercel gives a new preview URL.
 const allowedOrigins = [
   process.env.FRONTEND_URL,          // custom domain if set in Render env vars
-  "http://localhost:3000",            // local CRA dev server
+  "http://localhost:3000",            // local CRA dev server (default port)
+  "http://localhost:3001",            // local CRA dev server (if 3000 is busy)
+  "http://localhost:3002",            // local CRA dev server (if 3001 is busy)
 ];
 
 app.use(cors({
