@@ -6,6 +6,8 @@ on:
     branches: [main]  # Run when pushing to main branch
   pull_request:
     branches: [main]  # Run when creating PR to main branch
+  workflow_dispatch:
+    
 
 jobs:
   # Job 1: Build and Test Backend
