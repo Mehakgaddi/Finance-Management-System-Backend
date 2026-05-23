@@ -6,7 +6,8 @@ const { db, isFirebaseAvailable } = require("../config/firebase");
 
 // SAVE TRANSACTION TO FIREBASE
 // When user adds a transaction, we also save it to Firebase as backup
-const saveTransactionToFirebase = async (userId, transactionData) => {
+// We align the document ID in Firebase with the transaction ID in MySQL so they can be deleted/updated properly.
+const saveTransactionToFirebase = async (userId, transactionId, transactionData) => {
   try {
     if (!isFirebaseAvailable()) {
       console.log("Firebase not available, skipping backup");
@@ -15,11 +16,12 @@ const saveTransactionToFirebase = async (userId, transactionData) => {
 
     // In Firebase, we create a path like: users/{userId}/transactions/{transactionId}
     // This organizes data by user first, then their transactions
+    const docId = transactionId ? String(transactionId) : undefined;
     const transactionRef = db
       .collection("users")
       .doc(String(userId))
       .collection("transactions")
-      .doc();
+      .doc(docId);
 
     // Save the transaction data
     await transactionRef.set({

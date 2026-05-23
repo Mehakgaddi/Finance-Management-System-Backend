@@ -3,7 +3,7 @@
 // We'll use Firebase to store transaction data as backup
 
 const admin = require("firebase-admin");
-require("dotenv").config();
+require("./env");
 
 // Initialize Firebase Admin (for backend operations)
 // We need a service account key file for this

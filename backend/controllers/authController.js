@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { saveUserToFirebase } = require("../services/firebaseService");
 const { generateToken, isTokenExpiringSoon } = require("../utils/tokenUtils");
-require("dotenv").config();
+require("../config/env");
 
 // SIGNUP
 const signup = async (req, res) => {

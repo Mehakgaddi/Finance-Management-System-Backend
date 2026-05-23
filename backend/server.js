@@ -4,7 +4,9 @@
 
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+
+// Load environment variables (supports .env.local for local overrides)
+require("./config/env");
 
 // Import Firebase config to initialize it
 require("./config/firebase");
@@ -80,8 +82,10 @@ const PORT = process.env.PORT || 5000;
 // Connect to DB and start server
 // Using sync({ force: false }) to avoid MySQL "Too many keys" error with alter:true
 // Tables are created if they don't exist, but existing tables are not altered
-sequelize
-  .authenticate()
+sequelize.ensureDatabaseExists()
+  .then(() => {
+    return sequelize.authenticate();
+  })
   .then(() => {
     console.log("Database connected successfully");
     return sequelize.sync({ force: false });

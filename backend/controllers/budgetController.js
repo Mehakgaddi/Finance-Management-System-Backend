@@ -113,6 +113,11 @@ const checkOverspending = async (userId) => {
       return { isOverspending: false, currentSpending: 0, budget: null };
     }
 
+    // Find the correct last day of the current month (handles leap years and shorter months)
+    const monthInt = now.getMonth() + 1; // 1-indexed month
+    const lastDay = new Date(year, monthInt, 0).getDate(); // 0th day of next month is the last day of this month
+    const lastDateStr = `${currentMonth}-${String(lastDay).padStart(2, '0')}`;
+
     // Get all expenses for this month only — filter in the DB, not in JS
     const transactions = await Transaction.findAll({
       where: {
@@ -120,7 +125,7 @@ const checkOverspending = async (userId) => {
         type: 'expense',
         date: {
           [Op.gte]: `${currentMonth}-01`,
-          [Op.lte]: `${currentMonth}-31`,
+          [Op.lte]: lastDateStr,
         }
       }
     });

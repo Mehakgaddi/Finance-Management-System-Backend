@@ -2,7 +2,7 @@
 // Helper functions for token operations
 
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+require("../config/env");
 
 // Generate a new JWT token
 const generateToken = (userId, expiresIn = "1d") => {

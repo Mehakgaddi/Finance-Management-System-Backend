@@ -23,17 +23,27 @@ const initializeEmailTransporter = () => {
   }
 
   try {
-    // Create transporter using Gmail (or any email service)
-    // Gmail requires: App Password (not regular password)
+    // Create transporter using direct Gmail SMTP servers for maximum stability
     transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use SSL/TLS secure connection
       auth: {
-        user: emailUser, // Your email (e.g., yourname@gmail.com)
-        pass: emailPassword, // App password (16 characters from Gmail)
+        user: emailUser, // Your email
+        pass: emailPassword.replace(/\s+/g, ""), // Strip spaces if they pasted with spaces
       },
     });
 
-    console.log("✅ Email transporter initialized successfully");
+    // Verify connection configuration on server startup to catch authentication issues early
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error("❌ Email transport verification failed:", error.message);
+        console.warn("   Double-check your email credentials. If using Gmail, make sure to generate a fresh 16-character App Password.");
+      } else {
+        console.log("📧 Email SMTP server is ready to deliver notifications");
+      }
+    });
+
     return transporter;
   } catch (error) {
     console.error("❌ Error initializing email transporter:", error.message);

@@ -29,7 +29,7 @@ const getChatbotResponse = async (userMessage) => {
       return getFallbackResponse(userMessage);
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
     const prompt = `You are a helpful, friendly, and expert financial advisor chatbot for a Finance Management System. 
 Answer the user's question about personal finance, budgeting, saving money, or managing expenses.

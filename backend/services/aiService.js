@@ -94,8 +94,8 @@ const calculateSpendingSummary = (transactions) => {
       categorySpending[transaction.category] += amount;
     }
 
-    // Track spending by month
-    const month = new Date(transaction.date).toISOString().split("T")[0].slice(0, 7);
+    // Track spending by month (transaction.date is in YYYY-MM-DD format)
+    const month = transaction.date.slice(0, 7);
     if (!monthlySpending[month]) {
       monthlySpending[month] = 0;
     }

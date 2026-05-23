@@ -25,7 +25,7 @@ const addTransaction = async (req, res) => {
     });
 
     // Also backup to Firebase (this happens in the background)
-    saveTransactionToFirebase(req.userId, {
+    saveTransactionToFirebase(req.userId, transaction.id, {
       title,
       amount,
       type,

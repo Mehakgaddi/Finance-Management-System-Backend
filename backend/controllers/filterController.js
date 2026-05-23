@@ -6,6 +6,15 @@
 const Transaction = require("../models/Transaction");
 const { Op } = require("sequelize");
 
+// Helper function to format Date object into YYYY-MM-DD in local time
+// This prevents timezone-shifting bugs where toISOString() shifts dates to UTC (the previous day)
+const formatLocalDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 // Helper function to get date range based on filter type
 const getDateRange = (filterType) => {
   const today = new Date();
@@ -51,8 +60,8 @@ const getFilteredTransactions = async (req, res) => {
     if (dateFilter) {
       const { startDate, endDate } = getDateRange(dateFilter);
       whereClause.date = {
-        [Op.gte]: startDate.toISOString().split("T")[0],
-        [Op.lt]: endDate.toISOString().split("T")[0],
+        [Op.gte]: formatLocalDate(startDate),
+        [Op.lt]: formatLocalDate(endDate),
       };
     }
 

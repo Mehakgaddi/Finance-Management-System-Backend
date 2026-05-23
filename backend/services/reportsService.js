@@ -27,7 +27,8 @@ const getSpendingReport = async (userId) => {
 
     transactions.forEach((transaction) => {
       const amount = parseFloat(transaction.amount);
-      const month = new Date(transaction.date).toISOString().split("T")[0].slice(0, 7);
+      // Slice the date string directly (it is in YYYY-MM-DD format) to prevent timezone shifts
+      const month = transaction.date.slice(0, 7);
 
       if (transaction.type === "income") {
         totalIncome += amount;
@@ -86,7 +87,12 @@ const getSpendingReport = async (userId) => {
     // Calculate budget status
     let budgetStatus = null;
     if (budget) {
-      const currentMonthExpense = monthlyData[new Date().toISOString().split("T")[0].slice(0, 7)]?.expense || 0;
+      // Calculate current month in local timezone to avoid date/month boundary shifts
+      const now = new Date();
+      const year = now.getFullYear();
+      const currentMonthStr = `${year}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      
+      const currentMonthExpense = monthlyData[currentMonthStr]?.expense || 0;
       budgetStatus = {
         monthlyLimit: budget.monthlyLimit,
         currentSpending: currentMonthExpense.toFixed(2),
